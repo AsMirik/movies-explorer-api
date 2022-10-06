@@ -11,7 +11,7 @@ module.exports.deleteMovieById = async (req, res, next) => {
   try {
     const movie = await Movie.findById(movieId);
     if (!movie) {
-      return next(new NotFoundError('Такой карточки нет'));
+      return next(new NotFoundError('Такого фильма нет'));
     }
     if (movie.owner.toString() !== owner) {
       return next(new ForbiddenError('Нет прав на удаление данного фильма'));
