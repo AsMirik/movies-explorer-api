@@ -28,9 +28,10 @@ module.exports.deleteMovieById = async (req, res, next) => {
 
 module.exports.createMovie = async (req, res, next) => {
   const owner = req.user._id;
-  const { country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId } = req.body;
   try {
-    const movie = await Movie.create({ owner, country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId });
+    const movie = await Movie.create({
+      owner, ...req.body,
+    });
     return res.status(200).send(movie);
   } catch (err) {
     if (err.name === 'ValidationError') {

@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     validate: {
       validator: validator.isEmail,
       message: 'Невалидный адрес электронной почты',
-    }
+    },
   },
   password: {
     type: String,
@@ -22,6 +22,6 @@ const userSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 30,
   },
-})
+});
 
 module.exports = mongoose.model('user', userSchema);
