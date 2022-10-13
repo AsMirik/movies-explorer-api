@@ -3,6 +3,7 @@ const ServerError = require('../errors/ServerError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ForbiddenError = require('../errors/ForbiddenError');
+// Заливаю
 
 module.exports.deleteMovieById = async (req, res, next) => {
   const { movieId } = req.params;
