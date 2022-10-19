@@ -6,11 +6,11 @@ const ForbiddenError = require('../errors/ForbiddenError');
 // Заливаю
 
 module.exports.deleteMovieById = async (req, res, next) => {
-  const { movieId } = req.params;
+  const { id } = req.params;
   const owner = req.user._id;
 
   try {
-    const movie = await Movie.findById(movieId);
+    const movie = await Movie.findById(id);
     if (!movie) {
       return next(new NotFoundError('Такого фильма нет'));
     }
