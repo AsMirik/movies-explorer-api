@@ -30,7 +30,7 @@ const movieSchema = new mongoose.Schema({
         return isURL(v);
       },
       message: 'Невалидная ссылка',
-    }
+    },
   },
   trailerLink: {
     type: String,
@@ -40,7 +40,7 @@ const movieSchema = new mongoose.Schema({
         return isURL(v);
       },
       message: 'Невалидная ссылка',
-    }
+    },
   },
   thumbnail: {
     type: String,
@@ -50,7 +50,7 @@ const movieSchema = new mongoose.Schema({
         return isURL(v);
       },
       message: 'Невалидная ссылка',
-    }
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

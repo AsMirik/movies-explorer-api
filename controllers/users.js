@@ -6,11 +6,10 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 const AuthError = require('../errors/AuthError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.getUserInfo = async (req, res, next) => {
-  // const { email, name } = req.body;
   const id = req.user._id;
-  console.log('юзер', id);
 
   try {
     const user = await User.findById(id);
@@ -41,7 +40,7 @@ module.exports.updateUser = async (req, res, next) => {
     return res.status(200).send(user);
   } catch (err) {
     if (err.name === 'MongoServerError' && err.codeName === 'DuplicateKey') {
-      return next(new BadRequestError('Пользователь с таким email уже зарегистрирован'));
+      return next(new ForbiddenError('Пользователь с таким email уже зарегистрирован'));
     }
 
     if (err.name === 'ValidationError') {
@@ -58,7 +57,7 @@ module.exports.createUser = async (req, res, next) => {
   try {
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
-      email, password: hash, name
+      email, password: hash, name,
     });
 
     return res.status(200).send(user);
@@ -96,7 +95,7 @@ module.exports.login = async (req, res, next) => {
       httpOnly: true,
       sameSite: true,
     });
-    return res.status(200).send({ message: "Вы успешно авторизовались" });
+    return res.status(200).send({ message: 'Вы успешно авторизовались' });
   } catch (err) {
     return next(new ServerError('Ошибка на сервере'));
   }
