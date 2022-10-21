@@ -9,7 +9,6 @@ const urlValidator = (value) => {
   return value;
 };
 
-
 const validateUpdateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
@@ -55,7 +54,6 @@ const validateSignup = celebrate({
 });
 
 module.exports = {
-  validateId,
   validateUpdateUser,
   validateCreateMovie,
   validateDeleteMovie,
