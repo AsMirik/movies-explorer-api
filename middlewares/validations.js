@@ -9,11 +9,6 @@ const urlValidator = (value) => {
   return value;
 };
 
-const validateId = celebrate({
-  params: Joi.object().keys({
-    _id: Joi.string().alphanum().length(24).hex(),
-  }),
-});
 
 const validateUpdateUser = celebrate({
   body: Joi.object().keys({
