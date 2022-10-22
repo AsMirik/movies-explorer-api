@@ -3,13 +3,14 @@ const ServerError = require('../errors/ServerError');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ForbiddenError = require('../errors/ForbiddenError');
+// Заливаю
 
 module.exports.deleteMovieById = async (req, res, next) => {
-  const { movieId } = req.params;
+  const { id } = req.params;
   const owner = req.user._id;
 
   try {
-    const movie = await Movie.findById(movieId);
+    const movie = await Movie.findById(id);
     if (!movie) {
       return next(new NotFoundError('Такого фильма нет'));
     }
@@ -42,8 +43,12 @@ module.exports.createMovie = async (req, res, next) => {
 };
 
 module.exports.getAllSaveMovies = async (req, res, next) => {
+  const owner = req.user._id;
+
   try {
-    const movie = await Movie.find({});
+    const movie = await Movie.find({
+      owner: owner
+    });
     return res.status(200).send(movie);
   } catch (err) {
     return next(new ServerError('Ошибка на сервере'));

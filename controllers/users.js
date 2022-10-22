@@ -8,14 +8,10 @@ const ConflictError = require('../errors/ConflictError');
 const AuthError = require('../errors/AuthError');
 
 module.exports.getUserInfo = async (req, res, next) => {
-  const { email, name } = req.body;
   const id = req.user._id;
 
   try {
-    const user = await User.findById(
-      id,
-      { email, name },
-    );
+    const user = await User.findById(id);
     if (!user) {
       return next(new NotFoundError('Пользователь не найден'));
     }
@@ -42,6 +38,10 @@ module.exports.updateUser = async (req, res, next) => {
 
     return res.status(200).send(user);
   } catch (err) {
+    if (err.name === 'MongoServerError' && err.codeName === 'DuplicateKey') {
+      return next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
+    }
+
     if (err.name === 'ValidationError') {
       return next(new BadRequestError('Некорректные данные пользователя'));
     }
@@ -56,7 +56,7 @@ module.exports.createUser = async (req, res, next) => {
   try {
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
-      name, email, password: hash,
+      email, password: hash, name,
     });
 
     return res.status(200).send(user);
@@ -94,8 +94,13 @@ module.exports.login = async (req, res, next) => {
       httpOnly: true,
       sameSite: true,
     });
-    return res.status(200).send({ token });
+    return res.status(200).send({ message: 'Вы успешно авторизовались' });
   } catch (err) {
     return next(new ServerError('Ошибка на сервере'));
   }
+};
+
+module.exports.signout = async (req, res) => {
+  res.clearCookie('jwt');
+  return res.status(200).send();
 };
