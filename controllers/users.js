@@ -6,7 +6,6 @@ const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 const AuthError = require('../errors/AuthError');
-const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.getUserInfo = async (req, res, next) => {
   const id = req.user._id;
@@ -40,7 +39,7 @@ module.exports.updateUser = async (req, res, next) => {
     return res.status(200).send(user);
   } catch (err) {
     if (err.name === 'MongoServerError' && err.codeName === 'DuplicateKey') {
-      return next(new ForbiddenError('Пользователь с таким email уже зарегистрирован'));
+      return next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
     }
 
     if (err.name === 'ValidationError') {

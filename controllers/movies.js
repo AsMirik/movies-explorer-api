@@ -43,8 +43,12 @@ module.exports.createMovie = async (req, res, next) => {
 };
 
 module.exports.getAllSaveMovies = async (req, res, next) => {
+  const owner = req.user._id;
+
   try {
-    const movie = await Movie.find({});
+    const movie = await Movie.find({
+      owner: owner
+    });
     return res.status(200).send(movie);
   } catch (err) {
     return next(new ServerError('Ошибка на сервере'));

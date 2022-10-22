@@ -18,13 +18,13 @@ const validateUpdateUser = celebrate({
 
 const validateCreateMovie = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().min(1),
-    director: Joi.string().required().min(1),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
     duration: Joi.number().required(),
-    year: Joi.string().required().min(2).max(4),
-    description: Joi.string().required().min(1),
-    nameRU: Joi.string().required().min(1),
-    nameEN: Joi.string().required().min(1),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
     image: Joi.string().required().custom(urlValidator),
     trailerLink: Joi.string().required().custom(urlValidator),
     thumbnail: Joi.string().required().custom(urlValidator),
@@ -41,7 +41,7 @@ const validateDeleteMovie = celebrate({
 const validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
   }),
 });
 
